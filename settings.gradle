@@ -1,4 +1,5 @@
 rootProject.name = 'advent-2022'
-include 'day_01'
 include 'common'
+include 'day_01'
+include 'day_02'
 

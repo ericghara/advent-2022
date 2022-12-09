@@ -3,9 +3,8 @@ plugins {
     id 'application'
 }
 
-group = 'com.ericgha'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+group 'com.ericgha'
+version '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()

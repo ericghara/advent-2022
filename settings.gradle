@@ -1,2 +1,4 @@
 rootProject.name = 'advent-2022'
+include 'day_01'
+include 'common'
 

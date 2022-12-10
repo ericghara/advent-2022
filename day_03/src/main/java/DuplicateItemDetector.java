@@ -46,7 +46,7 @@ public class DuplicateItemDetector {
         long identity = ( 1L << ( 52 ) ) - 1; // ie all available items;
         long encodedDuplicate = group.mapToLong( this::encodeRucksackContents ).reduce( identity, (a, b) -> a & b );
         int priority = 1;
-        while (encodedDuplicate > 0) {
+        while (priority <= 52) {
             if (( encodedDuplicate & 1 ) == 1) {
                 return priority;
             }

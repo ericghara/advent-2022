@@ -1,12 +1,11 @@
 import constants.Outcome;
 import constants.Play;
 import dto.RoundPlays;
+import mapper.DecodeByOutcome;
 import mapper.DecodeByValue;
 
 import java.io.BufferedReader;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -18,7 +17,14 @@ public class Day02 {
         this.encodedRounds = loadInput( filename );
     }
 
+    /*
+          outcome point values
+            loss | 0
+            draw | 3
+            win  | 6
 
+            score_for_round = shape_point_value + outcome_point_value
+     */
     public int getScore(RoundPlays roundPlays) {
         Play opponent = roundPlays.opponent();
         Play you = roundPlays.you();
@@ -37,13 +43,12 @@ public class Day02 {
     }
 
     private Stream<char[]> streamEncodedRounds() {
-        return Arrays.stream(encodedRounds);
+        return Arrays.stream( encodedRounds );
     }
 
     public int getYourScore(Function<char[], RoundPlays> decoder) {
-        return streamEncodedRounds().map( decoder ).mapToInt(this::getScore).sum();
+        return streamEncodedRounds().map( decoder ).mapToInt( this::getScore ).sum();
     }
-
 
 
     public static void main(String[] args) {
@@ -53,8 +58,11 @@ public class Day02 {
         String filename = args[0];
         Day02 day02 = new Day02( filename );
         DecodeByValue decodeByValue = new DecodeByValue();
-        int scoreByGuide = day02.getYourScore(decodeByValue::apply);
-        System.out.printf( ">>> Your score playing by guide: %d%n", scoreByGuide );
+        int scoreByValue = day02.getYourScore( decodeByValue::apply );
+        System.out.printf( ">>> Your score by value based decoding: %d%n", scoreByValue );
+        DecodeByOutcome decodeByOutcome = new DecodeByOutcome();
+        int scoreByOutcome = day02.getYourScore( decodeByOutcome::apply );
+        System.out.printf( ">>> Your score playing by outcome based decoding: %d%n", scoreByOutcome );
     }
 
 

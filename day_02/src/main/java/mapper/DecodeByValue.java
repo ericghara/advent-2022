@@ -8,6 +8,17 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DecodeByValue {
+            /*
+            Strategy Guide (minimizing obvious cheating)
+            A | Y  (rock -> paper)
+            B | X  (paper -> rock)
+            C | Z  (scissors -> scissors)
+
+            opponent encoding| your encoding  | point value
+            Rock      A     | x               | 1
+            Paper     B     | y               | 2
+            Scissors  C     | z               | 3
+         */
 
     private final Map<Character, Play> charToPlay;
 

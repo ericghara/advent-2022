@@ -28,11 +28,21 @@ public class Day05 {
         Stack<Character> source = stacks.get(move.source() );
         Stack<Character> destination = stacks.get(move.destination() );
         validateMove( move, source, destination );
-        for (int i = source.size()-move.quantity(); i < destination.size(); i++) {
+        for (int i = source.size()-move.quantity(); i < source.size(); i++) {
             destination.push(source.get(i) );
         }
-        while (source.size() > source.size()-move.quantity() ) {
+        int finalSourceSize = source.size()-move.quantity();
+        while (source.size() > finalSourceSize ) {
             source.pop();
+        }
+    }
+
+    public void sequentialMove(CargoMove move, Map<Character, Stack<Character>> stacks) {
+        Stack<Character> source = stacks.get(move.source() );
+        Stack<Character> destination = stacks.get(move.destination() );
+        validateMove( move, source, destination );
+        for (int i = 0; i < move.quantity(); i++) {
+            destination.push(source.pop() );
         }
     }
 
@@ -68,8 +78,10 @@ public class Day05 {
         }
         String filename = args[0];
         Day05 day05 = new Day05();
+        String topAfterSequentialRearrange = day05.rearrangeAndGetTops(filename, day05::sequentialMove );
+        System.out.printf( ">>> Tops after sequential rearrangement { %s }%n", topAfterSequentialRearrange );
         String topAfterGroupRearrange = day05.rearrangeAndGetTops(filename, day05::groupMove );
-        System.out.printf( ">>> Tops after group rearrangement { %s }", topAfterGroupRearrange );
+        System.out.printf( ">>> Tops after group rearrangement { %s }%n", topAfterGroupRearrange );
     }
 
 }

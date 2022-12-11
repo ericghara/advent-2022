@@ -18,10 +18,9 @@ public class Parser {
     public StateAndMoves parse(String fileName) {
         Stack<char[]> stateBlock;
         Stream<CargoMove> moves;
-        try {
-            BufferedReader reader = ReaderUtils.getResourceFileReader( this, fileName);
+        try (BufferedReader reader = ReaderUtils.getResourceFileReader( this, fileName)) {
             stateBlock = getInitialStateBlock( reader );
-            moves = parseMoves( reader );
+            moves = parseMoves( reader ).toList().stream(); // forcing a terminal stream op so we can close reader
         }
         catch (IOException e) {
             throw new IllegalStateException("Encountered an IO error while parsing the input.");

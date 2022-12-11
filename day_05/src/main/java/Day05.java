@@ -4,6 +4,7 @@ import dto.StateAndMoves;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 public class Day05 {
@@ -18,21 +19,28 @@ public class Day05 {
         return parser.parse( filename );
     }
 
-    private void move(CargoMove move, Map<Character, Stack<Character>> stacks) {
+    private void validateMove(CargoMove move, Stack<Character> source, Stack<Character> destination) throws IllegalArgumentException {
+        if (Objects.isNull(source) || Objects.isNull( destination ) || source.size() - move.quantity() < 0) {
+            throw new IllegalArgumentException(String.format("Cannot perform groupMove: %s", move  ) );
+        }
+    }
+    public void groupMove(CargoMove move, Map<Character, Stack<Character>> stacks) {
         Stack<Character> source = stacks.get(move.source() );
         Stack<Character> destination = stacks.get(move.destination() );
-        if (Objects.isNull(source) || Objects.isNull( destination ) || source.size() - move.quantity() < 0) {
-            throw new IllegalArgumentException(String.format("Cannot perform move: %s", move  ) );
+        validateMove( move, source, destination );
+        for (int i = source.size()-move.quantity(); i < destination.size(); i++) {
+            destination.push(source.get(i) );
         }
-        for (int i = 0; i < move.quantity(); i++) {
-            destination.push(source.pop() );
+        while (source.size() > source.size()-move.quantity() ) {
+            source.pop();
         }
     }
 
-    Map<Character, Stack<Character>> rearrange(StateAndMoves stateAndMoves) {
+    Map<Character, Stack<Character>> rearrange(StateAndMoves stateAndMoves, 
+                                               BiConsumer<CargoMove, Map<Character, Stack<Character>>> mover) {
         Stream<CargoMove> moves = stateAndMoves.moves();
         Map<Character, Stack<Character>> stacks = stateAndMoves.state();
-        moves.forEach( curMove -> move(curMove, stacks) );
+        moves.forEach( curMove -> mover.accept(curMove, stacks) );
         return stacks;
     }
 
@@ -47,10 +55,10 @@ public class Day05 {
         }
         return new String(top);
     }
-
-    public String rearrangeAndGetTops(String filename) {
+    
+    public String rearrangeAndGetTops(String filename, BiConsumer<CargoMove, Map<Character, Stack<Character>>> mover) {
         StateAndMoves stateAndMoves = initialize( filename );
-        rearrange( stateAndMoves );
+        rearrange( stateAndMoves, mover );
         return listTops( stateAndMoves.state() );
     }
 
@@ -60,8 +68,8 @@ public class Day05 {
         }
         String filename = args[0];
         Day05 day05 = new Day05();
-        String topAfterRearrange = day05.rearrangeAndGetTops(filename);
-        System.out.printf( ">>> Tops after rearrangement { %s }", topAfterRearrange );
+        String topAfterGroupRearrange = day05.rearrangeAndGetTops(filename, day05::groupMove );
+        System.out.printf( ">>> Tops after group rearrangement { %s }", topAfterGroupRearrange );
     }
 
 }

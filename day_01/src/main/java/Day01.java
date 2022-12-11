@@ -12,7 +12,7 @@ public class Day01 {
 
 
         CalorieStreamer(String filename) {
-            reader = ReaderUtils.getResourceFileReader(this, filename);
+            reader = ReaderUtils.getResourceFileReader( filename);
             stream = IntStream.iterate( -1, this::hasNext,  this::totalElf ); // seed is unused
         }
 

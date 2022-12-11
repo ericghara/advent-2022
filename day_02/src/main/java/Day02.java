@@ -38,7 +38,7 @@ public class Day02 {
     }
 
     private char[][] loadInput(String filename) {
-        BufferedReader reader = ReaderUtils.getResourceFileReader( this, filename );
+        BufferedReader reader = ReaderUtils.getResourceFileReader( filename );
         return reader.lines().filter( s -> !s.isBlank() ).map( String::trim ).map( s -> new char[]{s.charAt( 0 ), s.charAt( 2 )} ).toArray( char[][]::new );
     }
 

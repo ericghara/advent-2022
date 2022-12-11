@@ -11,7 +11,7 @@ public class Day04 {
     }
 
     private Interval[][] parseIntervalPairs(String fileName) {
-        BufferedReader reader = ReaderUtils.getResourceFileReader( this, fileName );
+        BufferedReader reader = ReaderUtils.getResourceFileReader( fileName );
         return reader.lines().map( String::strip ).filter( s -> !s.isBlank() )
                 .map( this::lineToIntervalPair )
                 .toArray( Interval[][]::new );

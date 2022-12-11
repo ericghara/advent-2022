@@ -1,11 +1,9 @@
 plugins {
     id 'java'
-    id 'application'
 }
 
 group 'com.ericgha'
 version '0.0.1-SNAPSHOT'
-mainClassName = 'Day04'
 
 repositories {
     mavenCentral()
@@ -14,7 +12,8 @@ repositories {
 dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
-    implementation project(':common')
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${jUnitVersion}"
+    implementation  project(':common')
 }
 
 test {

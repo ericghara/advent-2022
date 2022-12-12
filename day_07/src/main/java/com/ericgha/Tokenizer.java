@@ -1,7 +1,6 @@
-import command.ChangeDir;
-import command.Command;
-import command.ListDir;
-import exception.FileReadException;
+package com.ericgha;
+
+import com.ericgha.exception.FileReadException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -32,7 +31,8 @@ public class Tokenizer implements Closeable, Iterator<Command> {
         this.isDir = compileIsDir();
         this.isFile = compileIsFile();
         this.reader = init( resourceName );
-        this.commandStream = Stream.iterate( null, this::hasNext, this::nextCommand);
+        this.nextLine = nextLineOrNull();
+        this.commandStream = Stream.iterate( nextCommand(null ), this::hasNext, this::nextCommand);
     }
 
     @Override
@@ -70,11 +70,11 @@ public class Tokenizer implements Closeable, Iterator<Command> {
                 break;
             }
             if (isDir.reset( curLine ).find()) {
-                String dirName = curLine.substring( isDir.regionEnd(), curLine.length() );
+                String dirName = curLine.substring( isDir.end(), curLine.length() );
                 dirs.add( dirName );
             } else if (isFile.reset( curLine ).find()) {
-                long sizeB = Long.parseLong( isFile.group( 1 ) );
-                String fileName = curLine.substring( isFile.regionEnd(), curLine.length() );
+                long sizeB = Long.parseLong( isFile.group( 2 ) );
+                String fileName = curLine.substring( isFile.end(), curLine.length() );
                 files.add( new FileTree.File( fileName, sizeB ) );
             } else {
                 throw new IllegalArgumentException( "Unrecognized input: " + curLine );
@@ -94,18 +94,21 @@ public class Tokenizer implements Closeable, Iterator<Command> {
     private Command nextCommand(Command notUsed) throws IllegalStateException {
         String line = nextLine;
         nextLine = null;
-        if (!isCommand.reset( line ).find()) {
-            throw new IllegalArgumentException( "Provided line is not a command: " + line );
+        if (Objects.isNull(line) ) {
+            return null;
         }
-        int start = isCommand.regionStart();
+        if (!isCommand.reset( line ).find()) {
+            throw new IllegalArgumentException( "Provided line is not a com.ericgha.command: " + line );
+        }
+        int start = isCommand.end();
         int end = line.length();
         try {
             if (isListDir.reset( line ).region( start, end ).matches()) {
-                return createListDirCommand(line, isListDir.regionEnd() );
+                return createListDirCommand(line, isListDir.end() );
             } else if (isChangeDir.reset( line ).find()) {
-                return createChangeDirCommand(line, isChangeDir.regionEnd() );
+                return createChangeDirCommand(line, isChangeDir.end() );
             } else {
-                throw new IllegalStateException( "Unrecognized command line: " + nextLine );
+                throw new IllegalStateException( "Unrecognized com.ericgha.command line: " + nextLine );
 
             }
         } catch (IOException e) {
@@ -113,8 +116,8 @@ public class Tokenizer implements Closeable, Iterator<Command> {
         }
     }
 
-    private boolean hasNext(Command notUsed) {
-        if (Objects.nonNull( nextLine )) {
+    private boolean hasNext(Command lastCommand) {
+        if (Objects.nonNull( lastCommand ) || Objects.nonNull(nextLine) ) {
             return true;
         }
         this.close();
@@ -122,24 +125,30 @@ public class Tokenizer implements Closeable, Iterator<Command> {
     }
 
     @Nullable
-    private String nextLineOrNull() throws IOException {
-        if (reader.ready() ) {
-            return reader.readLine().strip();
+    private String nextLineOrNull() throws FileReadException {
+        try {
+            if (reader.ready() ) {
+                return reader.readLine().strip();
+            }
         }
+        catch (IOException e) {
+            throw new FileReadException("Error reading file");
+        }
+
         return null;
     }
 
     private BufferedReader init(String resourceName) throws IllegalArgumentException {
+        BufferedReader newReader;
         try {
-            BufferedReader reader = ReaderUtils.getResourceFileReader( resourceName );
-            if (!reader.ready()) {
+            newReader = ReaderUtils.getResourceFileReader( resourceName );
+            if (!newReader.ready()) {
                 throw new IllegalArgumentException( "Received an empty file" );
             }
-            nextLine = nextLineOrNull();
         } catch (IOException e) {
             throw new IllegalArgumentException( "Encountered an error reading the resource: " + resourceName );
         }
-        return reader;
+        return newReader;
     }
 
     private Matcher compileIsCommand() {

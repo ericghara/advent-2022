@@ -1,5 +1,4 @@
-package command;
-
+package com.ericgha;
 
 import java.util.List;
 

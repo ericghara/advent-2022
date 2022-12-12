@@ -1,4 +1,4 @@
-package exception;
+package com.ericgha.exception;
 
 public class FileReadException extends RuntimeException {
 

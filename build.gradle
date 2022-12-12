@@ -6,6 +6,7 @@ plugins {
 group = 'com.ericgha'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
 ext {
     jUnitVersion = '5.9.1'
 }

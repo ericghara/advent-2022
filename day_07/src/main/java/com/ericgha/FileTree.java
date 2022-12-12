@@ -1,15 +1,12 @@
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Stack;
+package com.ericgha;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileTree {
 
-    public record File(String name, long sizeB) {
+    public static record File(String name, long sizeB) {
 
     }
 

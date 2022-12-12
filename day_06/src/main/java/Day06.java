@@ -1,3 +1,5 @@
+import com.ericgha.ReaderUtils;
+
 public class Day06 {
 
     private final CharCounter counter;

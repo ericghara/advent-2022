@@ -1,3 +1,5 @@
+package com.ericgha;
+
 public class Day07 {
 
     public Day07() {

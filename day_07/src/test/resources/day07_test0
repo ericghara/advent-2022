@@ -1,0 +1,15 @@
+$ cd /
+$ ls
+dir dir0
+dir dir1
+0 file0
+1 file1
+$ cd dir0
+$ ls
+2 file2
+$ cd ..
+$ ls
+dir dir0
+dir dir1
+0 file0
+1 file1

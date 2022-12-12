@@ -1,4 +1,6 @@
-import exception.FileReadException;
+package com.ericgha;
+
+import com.ericgha.exception.FileReadException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -52,7 +54,7 @@ public class ReaderUtils {
     }
 
     public static Path getResourceURI(String filename) throws FileReadException {
-        URL url = ReaderUtils.class.getResource( filename );
+        URL url = Thread.currentThread().getContextClassLoader().getResource( filename );
         URI uri;
         if (Objects.isNull( url )) {
             throw new FileReadException( "Could not open the resource " + filename );

@@ -1,4 +1,4 @@
-package command;
+package com.ericgha;
 
 public interface Command {
 }

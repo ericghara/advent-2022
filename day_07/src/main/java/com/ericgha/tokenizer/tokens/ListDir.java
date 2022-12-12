@@ -1,4 +1,6 @@
-package com.ericgha;
+package com.ericgha.tokenizer.tokens;
+
+import com.ericgha.filesystem.FileTree;
 
 import java.util.List;
 

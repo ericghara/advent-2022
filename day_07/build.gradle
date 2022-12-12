@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'com.ericgha'
 version '0.0.1-SNAPSHOT'
+mainClassName = "com.ericgha.Day07"
 
 repositories {
     mavenCentral()

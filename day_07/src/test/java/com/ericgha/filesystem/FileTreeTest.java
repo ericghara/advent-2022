@@ -16,11 +16,11 @@ class FileTreeTest {
     @Test
     void addFrom() {
         Command lsRoot = new ListDir( List.of("dir0", "dir1"),
-                List.of(new FileTree.File("file0", 0), new FileTree.File("file1", 1) ) );
+                List.of(new File("file0", 0), new File("file1", 1) ) );
         Stream<Command> commands = Stream.of(new ChangeDir("/"),
                 lsRoot,
                 new ChangeDir("dir0"),
-                new ListDir(List.of(), List.of(new FileTree.File("file2", 2) ) ),
+                new ListDir(List.of(), List.of(new File("file2", 2) ) ),
                 new ChangeDir("..")
         );
         FileTree fileTree = new FileTree();

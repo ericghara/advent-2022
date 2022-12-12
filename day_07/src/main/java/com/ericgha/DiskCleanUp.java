@@ -1,5 +1,6 @@
 package com.ericgha;
 
+import com.ericgha.filesystem.File;
 import com.ericgha.filesystem.FileTree;
 
 import java.util.Arrays;
@@ -19,8 +20,8 @@ public class DiskCleanUp {
     }
 
     private long sumFiles() {
-        FileTree.File[] files = walk.getFiles();
-        return Arrays.stream( files ).mapToLong( FileTree.File::sizeB ).sum();
+        File[] files = walk.getFiles();
+        return Arrays.stream( files ).mapToLong( File::sizeB ).sum();
     }
 
     private long postOrder() {

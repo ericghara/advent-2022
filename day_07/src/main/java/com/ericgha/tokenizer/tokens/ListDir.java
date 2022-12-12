@@ -1,8 +1,8 @@
 package com.ericgha.tokenizer.tokens;
 
-import com.ericgha.filesystem.FileTree;
+import com.ericgha.filesystem.File;
 
 import java.util.List;
 
-public record ListDir(List<String> dirNames, List<FileTree.File> files) implements Command {
+public record ListDir(List<String> dirNames, List<File> files) implements Command {
 }

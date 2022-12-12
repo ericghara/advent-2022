@@ -1,6 +1,6 @@
 package com.ericgha;
 
-import com.ericgha.filesystem.FileTree;
+import com.ericgha.filesystem.File;
 import com.ericgha.tokenizer.Tokenizer;
 import com.ericgha.tokenizer.tokens.ChangeDir;
 import com.ericgha.tokenizer.tokens.Command;
@@ -17,11 +17,11 @@ class TokenizerTest {
     void streamMultiLine() {
         Tokenizer tokenizer = new Tokenizer("day07_test0");
         Command lsRoot = new ListDir(List.of("dir0", "dir1"),
-                List.of(new FileTree.File("file0", 0), new FileTree.File("file1", 1) ) );
+                List.of(new File("file0", 0), new File("file1", 1) ) );
         List<Command> expected = List.of(new ChangeDir("/"),
                 lsRoot,
                 new ChangeDir("dir0"),
-                new ListDir(List.of(), List.of(new FileTree.File("file2", 2) ) ),
+                new ListDir(List.of(), List.of(new File("file2", 2) ) ),
                 new ChangeDir(".."),
                 lsRoot
         );

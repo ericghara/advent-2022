@@ -2,7 +2,7 @@ package com.ericgha.tokenizer;
 
 import com.ericgha.ReaderUtils;
 import com.ericgha.exception.FileReadException;
-import com.ericgha.filesystem.FileTree;
+import com.ericgha.filesystem.File;
 import com.ericgha.tokenizer.tokens.ChangeDir;
 import com.ericgha.tokenizer.tokens.Command;
 import com.ericgha.tokenizer.tokens.ListDir;
@@ -64,7 +64,7 @@ public class Tokenizer implements Closeable {
     }
 
     private ListDir createListDirCommand(String line, int startIndex) throws IOException {
-        ArrayList<FileTree.File> files = new ArrayList<>();
+        ArrayList<File> files = new ArrayList<>();
         ArrayList<String> dirs = new ArrayList<>();
         while (true) {
             String curLine = nextLineOrNull();
@@ -78,7 +78,7 @@ public class Tokenizer implements Closeable {
             } else if (isFile.reset( curLine ).find()) {
                 long sizeB = Long.parseLong( isFile.group( 2 ) );
                 String fileName = curLine.substring( isFile.end(), curLine.length() );
-                files.add( new FileTree.File( fileName, sizeB ) );
+                files.add( new File( fileName, sizeB ) );
             } else {
                 throw new IllegalArgumentException( "Unrecognized input: " + curLine );
             }

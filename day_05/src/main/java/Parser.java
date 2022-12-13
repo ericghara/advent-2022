@@ -1,6 +1,6 @@
 import com.ericgha.ReaderUtils;
-import dto.CargoMove;
-import dto.StateAndMoves;
+import com.ericgha.dto.CargoMove;
+import com.ericgha.dto.StateAndMoves;
 
 import java.io.BufferedReader;
 import java.io.IOException;

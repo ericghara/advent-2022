@@ -1,5 +1,5 @@
 import com.ericgha.ReaderUtils;
-import dto.Interval;
+import com.ericgha.dto.Interval;
 
 import java.io.BufferedReader;
 import java.util.stream.Stream;

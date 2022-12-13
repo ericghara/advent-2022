@@ -5,7 +5,7 @@ plugins {
 
 group 'com.ericgha'
 version '0.0.1-SNAPSHOT'
-mainClassName = 'com.ericgha.Day06'
+mainClassName = 'com.ericgha.Day08'
 
 repositories {
     mavenCentral()
@@ -15,7 +15,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${jUnitVersion}"
-    implementation  project(':common')
+    implementation project(':common')
 }
 
 test {

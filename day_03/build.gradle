@@ -5,7 +5,7 @@ plugins {
 
 group 'com.ericgha'
 version '0.0.1-SNAPSHOT'
-mainClassName = 'Day03'
+mainClassName = 'com.ericgha.Day03'
 
 repositories {
     mavenCentral()

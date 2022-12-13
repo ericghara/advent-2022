@@ -1,5 +1,5 @@
-import dto.CargoMove;
-import dto.StateAndMoves;
+import com.ericgha.dto.CargoMove;
+import com.ericgha.dto.StateAndMoves;
 
 import java.util.Map;
 import java.util.Objects;

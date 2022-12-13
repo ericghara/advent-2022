@@ -3,8 +3,6 @@ package com.ericgha;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.PrimitiveIterator;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TreeVisibilityTest {
@@ -13,34 +11,32 @@ class TreeVisibilityTest {
 
     @ParameterizedTest(name = "[{index}] {0}")
     @CsvSource(useHeadersInDisplayName = true, delimiter = '|', textBlock = """
-                   row | expected inc | expected dec
-                   0   | 2            | 2
-                   1   | 2            | 2
-                   2   | 1            | 4
-                   3   | 3            | 1
-                   4   | 3            | 2
+                   row | expected
+                   0   | 3
+                   1   | 4
+                   2   | 4
+                   3   | 3
+                   4   | 4
             """)
-    void generateOnRows(int row, int expectedInc, int expectedDec) {
-        PrimitiveIterator.OfInt rowIter = treeGrid.rowIterator( row );
-        TreeVisibility treeVisibility = TreeVisibility.generate( rowIter );
-        assertEquals( expectedInc, treeVisibility.getIncreasingStack().size(), "Increasing Stack row: " + row );
-        assertEquals( expectedDec, treeVisibility.getDecreasingStack().size(), "Decreasing Stack row: " + row );
+    void processRows(int row, int expected) {
+        TreeVisibility treeVisibility = new TreeVisibility( treeGrid );
+        treeVisibility.processAxis( treeGrid.rowIterator(row) );
+        assertEquals( expected, treeVisibility.getVisibleTrees(), "row: " + row );
     }
 
     @ParameterizedTest(name = "[{index}] {0}")
     @CsvSource(useHeadersInDisplayName = true, delimiter = '|', textBlock = """
-                   col | expected inc | expected dec
-                   0   | 2            | 2
-                   1   | 2            | 1
-                   2   | 2            | 2
-                   3   | 2            | 1
-                   4   | 2            | 2
+                   col | expected
+                   0   | 3
+                   1   | 3
+                   2   | 4
+                   3   | 2
+                   4   | 3
             """)
     // essentially the same as last test, just more test cases
-    void generateOnCols(int col, int expectedInc, int expectedDec) {
-        PrimitiveIterator.OfInt colIter = treeGrid.colIterator( col );
-        TreeVisibility treeVisibility = TreeVisibility.generate( colIter );
-        assertEquals( expectedInc, treeVisibility.getIncreasingStack().size(), "Increasing Stack col: " + col );
-        assertEquals( expectedDec, treeVisibility.getDecreasingStack().size(), "Decreasing Stack col: " + col );
+    void processCols(int col, int expected) {
+        TreeVisibility treeVisibility = new TreeVisibility( treeGrid );
+        treeVisibility.processAxis( treeGrid.colIterator(col) );
+        assertEquals( expected, treeVisibility.getVisibleTrees(), "col: " + col );
     }
 }

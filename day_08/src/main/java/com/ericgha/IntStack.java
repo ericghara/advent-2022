@@ -48,6 +48,10 @@ public class IntStack {
         return size;
     }
 
+    public void clear() {
+        this.i = 0;
+    }
+
     @Override
     public String toString() {
         int[] rawArray = Arrays.copyOfRange( stack, 0, i );

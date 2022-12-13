@@ -10,48 +10,71 @@ public class TreeVisibility {
 
     // this is a strictly decreasing stack with the last seen tree taking precedence for height ties
     private final IntStack decreasingStack;
+    private final TreeGrid treeGrid;
+    private final boolean[] seen;
+    private int visibleTrees;
 
-    private TreeVisibility() {
+    public TreeVisibility(TreeGrid treeGrid) {
+        this.treeGrid = treeGrid;
         this.increasingStack = new IntStack( RADIX );
         this.decreasingStack = new IntStack( RADIX );
+        this.seen = new boolean[treeGrid.getNumTrees()];
+        this.visibleTrees = 0;
     }
 
-    public static TreeVisibility generate(PrimitiveIterator.OfInt lineOfTrees) {
-        TreeVisibility treeVisibility = new TreeVisibility();
+    public int getNumVisibleTrees() {
+        for (int col = 0; col < treeGrid.getNumCols(); col++) {
+            processAxis( treeGrid.colIterator( col ) );
+        }
+        for (int row = 0; row < treeGrid.getNumRows(); row++) {
+            processAxis( treeGrid.rowIterator( row ) );
+        }
+        return visibleTrees;
+    }
+
+    // open for testing
+    int getVisibleTrees() {
+        return visibleTrees;
+    }
+
+    // open for testing
+    void processAxis(PrimitiveIterator.OfInt lineOfTrees) {
         while (lineOfTrees.hasNext() ) {
             int encodedTree = lineOfTrees.nextInt();
-            treeVisibility.tryAddDecreasing( encodedTree );
-            treeVisibility.tryAddIncreasing( encodedTree );
+            addDecreasing( encodedTree );
+            tryAddIncreasing( encodedTree );
         }
-        return treeVisibility;
-    }
-
-    // no defensive copy
-    public IntStack getIncreasingStack() {
-        return increasingStack;
-    }
-
-    // no defensive copy
-    public IntStack getDecreasingStack() {
-        return decreasingStack;
+        synchronizeSeen( decreasingStack );
+        synchronizeSeen( increasingStack );
     }
 
     private int peekHeight(IntStack stack) {
         return TreeGrid.decodeHeight( stack.peek() );
     }
 
-    void tryAddIncreasing(int encodedTree) {
+    private void tryAddIncreasing(int encodedTree) {
         int height = TreeGrid.decodeHeight( encodedTree );
         if (increasingStack.isEmpty() || height > peekHeight( increasingStack ) ) {
             increasingStack.push( encodedTree );
         }
     }
 
-    void tryAddDecreasing(int encodedTree) {
+    private void addDecreasing(int encodedTree) {
         int height = TreeGrid.decodeHeight( encodedTree );
         while (!decreasingStack.isEmpty() && peekHeight( decreasingStack ) <= height ) {
             decreasingStack.pop();
         }
         decreasingStack.push( encodedTree );
+    }
+
+
+    private void synchronizeSeen(IntStack stack) {
+        while (!stack.isEmpty() ) {
+            int treeId = TreeGrid.decodeIndex(stack.pop() );
+            if (!seen[treeId]) {
+                seen[treeId] = true;
+                visibleTrees++;
+            }
+        }
     }
 }

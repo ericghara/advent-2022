@@ -52,6 +52,7 @@ class IntStackTest {
 
     @Test
     void provisionedSize() {
+        intStack = new IntStack( 3 );
         assertEquals( 3, intStack.provisionedSize() );
     }
 }

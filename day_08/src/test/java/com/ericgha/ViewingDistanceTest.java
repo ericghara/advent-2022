@@ -10,7 +10,7 @@ class ViewingDistanceTest {
     void assertEquals(long[][] expected, long[][] found) throws AssertionError {
         for (int r = 0; r < expected.length; r++) {
             for (int c= 0; c < expected[r].length; c++) {
-                Assertions.assertEquals(expected[r][c], found[r][c], String.format("view at r: %d c: %d", r, c) );
+                Assertions.assertEquals(expected[r][c], found[r][c], String.format("r: %d c: %d", r, c) );
             }
         }
     }

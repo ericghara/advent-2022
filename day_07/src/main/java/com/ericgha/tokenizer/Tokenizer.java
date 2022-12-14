@@ -1,5 +1,6 @@
 package com.ericgha.tokenizer;
 
+import com.ericgha.MatcherUtil;
 import com.ericgha.ReaderUtils;
 import com.ericgha.exception.FileReadException;
 import com.ericgha.filesystem.File;

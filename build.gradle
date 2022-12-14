@@ -16,11 +16,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
-}
-
 test {
     useJUnitPlatform()
 }

@@ -1,6 +1,6 @@
 package com.ericgha.filesystem;
 
-import com.ericgha.tokenizer.MatcherUtil;
+import com.ericgha.MatcherUtil;
 import com.ericgha.tokenizer.tokens.ChangeDir;
 import com.ericgha.tokenizer.tokens.Command;
 import com.ericgha.tokenizer.tokens.ListDir;

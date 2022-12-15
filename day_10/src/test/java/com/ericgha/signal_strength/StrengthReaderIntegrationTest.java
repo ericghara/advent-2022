@@ -33,6 +33,4 @@ public class StrengthReaderIntegrationTest {
             assertEquals( expected, found, "Measurement at time " + measureTimes[i] );
         }
     }
-
-
 }

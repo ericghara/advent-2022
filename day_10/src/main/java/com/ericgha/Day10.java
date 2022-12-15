@@ -7,18 +7,13 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Day10 {
-    // priority -> tic cycle -> check counter if req'd -> run command
-    // addx(v) ends on check cycle: not counted
-    // 1. what's horz position of sprite (3 pixels wide)?
-    // 2. what pixel is being drawn?
-    //  -> if sprite overlaps w/ current pixel ? 1 : 0;
 
     private StrengthReader strengthReader;
     private final Display display;
 
     public Day10(String resourceName, int[] measurementTimes) {
         this.display = new Display();
-        run(resourceName, measurementTimes);
+        run( resourceName, measurementTimes );
     }
 
     private void run(String resourceName, int[] measurementTimes) {
@@ -34,7 +29,8 @@ public class Day10 {
     }
 
     /**
-     * Doesn't modify stream.  Just peeks;
+     * Doesn't modify stream.  Just peeks. Need to subscribe before this does anything (cold).
+     *
      * @param events
      * @param measurementTimes
      * @return
@@ -62,6 +58,6 @@ public class Day10 {
         long sumReadings = day10.sumReadingsAt();
         System.out.printf( "The sum of all readings for time-points %s is: %d%n", Arrays.toString( times ), sumReadings );
         String image = day10.getImage();
-        System.out.printf("%30s%n%s%n", "======Current image======", image);
+        System.out.printf( "%30s%n%s%n", "======Current image======", image );
     }
 }

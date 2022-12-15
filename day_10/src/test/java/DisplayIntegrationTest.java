@@ -35,6 +35,6 @@ public class DisplayIntegrationTest {
                 #######.......#######.......#######.....
                 """;
         String found = display.toString();
-        assertEquals(expected.strip(), found);
+        assertEquals( expected.strip(), found );
     }
 }

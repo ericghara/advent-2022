@@ -3,16 +3,21 @@ package com.ericgha;
 import com.ericgha.event.AddX;
 import com.ericgha.event.Event;
 import com.ericgha.event.NoOp;
-import com.ericgha.event.Terminator;
 
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
+/**
+ * Reads in an input file which programs operations on a single register. Operations are {@code noop} and {@code addx}.
+ * {@code addx} has a parameter {@code amount} which is the value the register is incremented by.  {@code addx} requires
+ * 2 clock cycles.  {@code noop} requires 1 clock cycle. The input is transformed into an
+ * {@link java.util.stream.Stream}<{@link Event}>.  Each {@link Event} represents a time/clock interval where the
+ * register remains constant at a value.
+ */
 public class Sequencer {
 
     private final String NOOP_REGEX = "^\\s*noop\\s*$";
     private final String ADDX_REGEX = "^\\s*addx\\s*(-?\\d+)\\s*$";
-    private final String TERMINATOR = "TERMINATOR";
 
     private final Matcher noOpMatcher;
     private final Matcher addXMatcher;
@@ -42,32 +47,22 @@ public class Sequencer {
 
     public AddX createAddX(int amount) {
         AddX addX = new AddX( time, amount );
-        updateState(addX);
+        updateState( addX );
         return addX;
     }
 
-    public Terminator createTerminator() {
-        Terminator terminator = new Terminator( time );
-        updateState( terminator );
-        return terminator;
-    }
-
     public Event processLine(String line) {
-        if (noOpMatcher.reset(line).matches() ) {
+        if (noOpMatcher.reset( line ).matches()) {
             return createNoOp();
-        } else if (addXMatcher.reset(line).matches() ) {
-            int amount = Integer.parseInt( addXMatcher.group(1) );
+        } else if (addXMatcher.reset( line ).matches()) {
+            int amount = Integer.parseInt( addXMatcher.group( 1 ) );
             return createAddX( amount );
         }
-//        else if (line.equals( TERMINATOR )) {
-//            return createTerminator();
-//        }
-        throw new IllegalArgumentException("Unrecognized line: " + line);
+        throw new IllegalArgumentException( "Unrecognized line: " + line );
     }
 
     public Stream<Event> stream(Stream<String> lineStream) {
-//        Stream<String> terminatedStream = Stream.concat( lineStream, Stream.of(TERMINATOR ) );
-        return lineStream.map(this::processLine);
+        return lineStream.map( this::processLine );
     }
 
     // for testing

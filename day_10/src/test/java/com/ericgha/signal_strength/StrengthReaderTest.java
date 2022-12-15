@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StrengthReaderTest {
 
@@ -30,7 +30,7 @@ class StrengthReaderTest {
                  4   |  false
             """)
     void shouldRecord(int startTime, boolean shouldRecord) {
-        NoOp noOp = new NoOp(startTime);
+        NoOp noOp = new NoOp( startTime );
         strengthReader = new StrengthReader( new int[]{3} );
         boolean found = strengthReader.shouldRecord( noOp );
         assertEquals( shouldRecord, found );

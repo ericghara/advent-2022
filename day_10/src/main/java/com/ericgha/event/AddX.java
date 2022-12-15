@@ -6,7 +6,7 @@ public class AddX extends Event {
     private final int amount;
 
     public AddX(int start, int amount) {
-        super(start, start+DURATION);
+        super( start, start + DURATION );
         this.amount = amount;
     }
 

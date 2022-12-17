@@ -1,27 +1,27 @@
 package com.ericgha;
 
 import com.ericgha.monkey.MonkeyGame;
-import com.ericgha.parser.MonkeyParams;
+import com.ericgha.parser.MonkeyBuilder;
 import com.ericgha.parser.Parser;
 
 public class Day11 {
 
     /*
-     Notes: com.ericgha.parser.MonkeyParams buisness is the product of number of items b 2 most active monkies
+     Notes: com.ericgha.parser.MonkeyBuilder buisness is the product of number of items b 2 most active monkies
      We simulat for 20 rounds
      - In a single turn com.ericgha.monkey inspects and throws all of its items
      - New items get added to a queue
      */
 
     private final Parser parser;
-    private final MonkeyParams[] params;
+    private final MonkeyBuilder[] params;
 
     public Day11(String resourceName) {
         this.parser = new Parser();
         params = parser.parseResource( resourceName );
     }
 
-    public long getMonkeyBusinessScoreDampened(int round) {
+    public Long getMonkeyBusinessScoreDampened(int round) {
         MonkeyGame monkeyGame = new MonkeyGame( params, 3 );
         if (monkeyGame.roundsPlayed() != round) {
             monkeyGame.playTo( round );
@@ -29,7 +29,7 @@ public class Day11 {
         return monkeyGame.getMonkeyBusiness();
     }
 
-    public long getMonkeyBusinessScoreUnDampened(int round) {
+    public Long getMonkeyBusinessScoreUnDampened(int round) {
         MonkeyGame monkeyGame = new MonkeyGame( params, 1 );
         if (monkeyGame.roundsPlayed() != round) {
             monkeyGame.playTo( round );
@@ -45,10 +45,10 @@ public class Day11 {
         Day11 day11 = new Day11( filename );
         int round20 = 20;
         long round20Score = day11.getMonkeyBusinessScoreDampened( round20 );
-        System.out.printf( "Dampened Monkey Business score on round %d: %d", round20, round20Score );
-        int round1000 = 1000;
-        long round1000ScoreUn = day11.getMonkeyBusinessScoreUnDampened( round1000 );
-        System.out.printf( "UnDampened Monkey Business score on round %d: %d%n", round1000, round1000ScoreUn );
+        System.out.printf( "Dampened Monkey Business score on round %d: %d%n", round20, round20Score );
+        int round10_000 = 10_000;
+        long round1000ScoreUn = day11.getMonkeyBusinessScoreUnDampened( round10_000 );
+        System.out.printf( "UnDampened Monkey Business score on round %d: %d%n", round10_000, round1000ScoreUn );
     }
 
 }

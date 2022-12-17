@@ -22,8 +22,8 @@ public class Day11IntegrationTest {
 
     @Test
     void getMonkeyBusinessScoreUnDampened() {
-        long found = day11.getMonkeyBusinessScoreUnDampened(10_000);
-        long expected = 2713310158L;
+        Long found = day11.getMonkeyBusinessScoreUnDampened(10_000);
+        Long expected = 2713310158L;
         assertEquals( expected, found );
     }
 }

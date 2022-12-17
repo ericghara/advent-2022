@@ -1,6 +1,6 @@
 package com.ericgha.monkey;
 
-import com.ericgha.parser.MonkeyParams;
+import com.ericgha.parser.MonkeyBuilder;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -14,14 +14,19 @@ public class MonkeyGame {
     private int round;
     final private int boredDivisor;
 
-    public MonkeyGame(MonkeyParams[] monkeyParams, int boredDivisor) {
+    public MonkeyGame(MonkeyBuilder[] builders, int boredDivisor) {
         this.round = 0;
         this.boredDivisor = boredDivisor;
-        this.monkeys = initMonkeys( monkeyParams );
+        this.monkeys = initMonkeys( builders );
     }
 
-    TreeMap<Integer, Monkey> initMonkeys(MonkeyParams[] monkeyParams) {
-        var map = Arrays.stream( monkeyParams ).map( param -> new Monkey(param, this.boredDivisor) )
+    int calcLeastCommonMultiple(MonkeyBuilder[] builders) {
+        return Arrays.stream(builders ).mapToInt( MonkeyBuilder::divisor ).reduce( 1, (a,b) -> a*b );
+    }
+
+    TreeMap<Integer, Monkey> initMonkeys(MonkeyBuilder[] monkeyParams) {
+        int lcm = calcLeastCommonMultiple( monkeyParams );
+        var map = Arrays.stream( monkeyParams ).map( param -> new Monkey(param, this.boredDivisor, lcm) )
                 .collect( Collectors.toMap( Monkey::id, m -> m, (a, b) -> null, TreeMap::new ) );
         if (map.size() != monkeyParams.length) {
             throw new IllegalArgumentException( "Encountered a duplicate key" );
@@ -54,7 +59,7 @@ public class MonkeyGame {
 
     public Long getMonkeyBusiness() {
         return monkeys.values().stream().map( Monkey::itemsThrown ).sorted( Comparator.reverseOrder() )
-                .limit( 2 ).reduce( (Long x,Long y) -> (x * y) ).orElseThrow();
+                .limit( 2 ).mapToLong(i -> i).reduce( (x,y) -> (x * y) ).orElseThrow();
     }
 
     public int roundsPlayed() {

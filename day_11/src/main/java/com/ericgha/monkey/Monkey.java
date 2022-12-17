@@ -1,6 +1,6 @@
 package com.ericgha.monkey;
 
-import com.ericgha.parser.MonkeyParams;
+import com.ericgha.parser.MonkeyBuilder;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -15,18 +15,24 @@ public class Monkey {
     private final int divisor;
     private final int trueTarget;
     private final int falseTarget;
-    private final Function<Long, Long> worryFunction;
-    private final Queue<Long> items;
-    private long itemsThrown;
-    private long dampening;
+    private final Function<Integer, Integer> worryFunction;
+    private final Queue<Integer> items;
+    private int itemsThrown;
+    final private int dampening;
 
-    public Monkey(MonkeyParams monkeyParams, long dampening) {
-        this.id = monkeyParams.Id();
-        this.divisor = monkeyParams.Divisor();
-        this.trueTarget = monkeyParams.TrueTarget();
-        this.falseTarget = monkeyParams.FalseTarget();
-        this.worryFunction = monkeyParams.WorryFunction();
-        this.items = initItemQueue( monkeyParams.Items() );
+    /**
+     *
+     * @param monkeyBuilder
+     * @param dampening
+     * @param lcm least common multiple of all monkeys in group
+     */
+    public Monkey(MonkeyBuilder monkeyBuilder, int dampening, int lcm) {
+        this.id = monkeyBuilder.id();
+        this.divisor = monkeyBuilder.divisor();
+        this.trueTarget = monkeyBuilder.trueTarget();
+        this.falseTarget = monkeyBuilder.falseTarget();
+        this.worryFunction = monkeyBuilder.WorryFunction(lcm);
+        this.items = initItemQueue( monkeyBuilder.items() );
         this.itemsThrown = 0;
         this.dampening = dampening;
         validateTargets();
@@ -38,7 +44,7 @@ public class Monkey {
         }
     }
 
-    private boolean isDivisible(Long worryScore) {
+    private boolean isDivisible(Integer worryScore) {
         return (worryScore % divisor) == 0;
     }
 
@@ -48,10 +54,10 @@ public class Monkey {
 
     public TurnResult takeTurn() {
         updateItemsThrown();
-        Queue<Long> trueItems = new ArrayDeque<>();
-        Queue<Long> falseItems = new ArrayDeque<>();
+        Queue<Integer> trueItems = new ArrayDeque<>();
+        Queue<Integer> falseItems = new ArrayDeque<>();
         while (!items.isEmpty() ) {
-            Long score = worryFunction.apply(items.poll()) / dampening;
+            Integer score = worryFunction.apply(items.poll()) / dampening;
 
             if (isDivisible( score ) ) {
                 trueItems.offer(score);
@@ -63,7 +69,7 @@ public class Monkey {
         return new TurnResult( trueItems, falseItems );
     }
 
-    private Queue<Long> initItemQueue(long[] items) {
+    private Queue<Integer> initItemQueue(int[] items) {
         return Arrays.stream( items ).boxed().collect( Collectors.toCollection( ArrayDeque::new ) );
     }
 
@@ -83,19 +89,19 @@ public class Monkey {
         return falseTarget;
     }
 
-    public Function<Long, Long> worryFunction() {
+    public Function<Integer, Integer> worryFunction() {
         return worryFunction;
     }
 
-    public List<Long> items() {
+    public List<Integer> items() {
         return List.copyOf( items );
     }
 
-    public long itemsThrown() {
+    public int itemsThrown() {
         return itemsThrown;
     }
 
-    public void catchItems(Queue<Long> thrownItems) {
+    public void catchItems(Queue<Integer> thrownItems) {
         items.addAll( thrownItems );
     }
 }
